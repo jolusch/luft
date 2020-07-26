@@ -58,11 +58,11 @@ def main():
     sensor.set_gas_status(bme680.ENABLE_GAS_MEAS)
 
     for name in dir(sensor.calibration_data):
-    if not name.startswith('_'):
-        value = getattr(sensor.calibration_data, name)
+        if not name.startswith('_'):
+            value = getattr(sensor.calibration_data, name)
 
-        if isinstance(value, int):
-            logger.info("calibration data: {}: {}".format(name, value))
+            if isinstance(value, int):
+                logger.info("calibration data: {}: {}".format(name, value))
 
     sensor.set_gas_heater_temperature(320)
     sensor.set_gas_heater_duration(150)
