@@ -1,6 +1,6 @@
 import argparse
 import bme680
-from bme680_exporter import BME680Exporter
+from exporter import exporter
 import json
 import logging
 import prometheus_client
@@ -69,7 +69,7 @@ def main():
     sensor.select_gas_heater_profile(0)
 
     logger.info("initializing exporter with labels {}".format(args.labels))
-    exporter = BME680Exporter(sensor, labels=args.labels)
+    exporter = exporter.BME680Exporter(sensor, labels=args.labels)
 
     logger.info("starting exporter on port {}".format(args.port))
     prometheus_client.start_http_server(args.port)
