@@ -69,21 +69,8 @@ def main():
     sensor.set_gas_heater_duration(150)
     sensor.select_gas_heater_profile(0)
 
-    output = "Nope"
-    while True:
-        if sensor.get_sensor_data():
-            output = "{0:.2f} C,{1:.2f} hPa,{2:.2f} %RH".format(sensor.data.temperature, sensor.data.pressure, sensor.data.humidity)
-
-        if sensor.data.heat_stable:
-            print("{0},{1} Ohms".format(output, sensor.data.gas_resistance))
-
-        else:
-            print(output)
-
-        sleep(1)
-
     logger.info("initializing exporter with labels {}".format(args.labels))
-    exporter = exp.BME680Exporter(sensor, labels=args.labels)
+    exporter = exp.BME680Exporter(labels=args.labels)
 
     logger.info("starting exporter on port {}".format(args.port))
     prometheus_client.start_http_server(args.port)
@@ -91,8 +78,9 @@ def main():
     logger.info("starting sampling with {:.1f}s interval".format(args.interval))
 
     while True:
-        exporter.measure()
-        exporter.export()
+        if sensor.get_sensor_data() and sensor.data.heat_stable:
+            exporter.export(sensor.data.temperature, sensor.data.humidity, sensor.data.pressure, sensor.data.gas_resistance)
+
         sleep(args.interval)
 
 
