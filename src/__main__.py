@@ -56,7 +56,7 @@ def main():
     sensor.set_temperature_oversample(bme680.OS_8X)
     sensor.set_filter(bme680.FILTER_SIZE_3)
     sensor.set_gas_status(bme680.ENABLE_GAS_MEAS)
-    sensor.set_temp_offset(6)
+    sensor.set_temp_offset(-4)
 
     for name in dir(sensor.calibration_data):
         if not name.startswith('_'):
