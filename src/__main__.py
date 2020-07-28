@@ -50,7 +50,7 @@ def main():
                         p=bme680.OS_4X,
                         t=bme680.OS_8X))
 
-    sensor = bme680.BME680(bme680.I2C_ADDR_PRIMARY)
+    sensor = bme680.BME680()
     sensor.set_humidity_oversample(bme680.OS_2X)
     sensor.set_pressure_oversample(bme680.OS_4X)
     sensor.set_temperature_oversample(bme680.OS_8X)
@@ -69,6 +69,7 @@ def main():
     sensor.set_gas_heater_duration(150)
     sensor.select_gas_heater_profile(0)
 
+    output = "Nope"
     while True:
         if sensor.get_sensor_data():
             output = "{0:.2f} C,{1:.2f} hPa,{2:.2f} %RH".format(sensor.data.temperature, sensor.data.pressure, sensor.data.humidity)
